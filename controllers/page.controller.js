@@ -1,7 +1,7 @@
 const Page = require('../Models/page.model');
 const User = require('../Models/user.model');
 
-// Crear página
+// Creación de página
 const createPage = async (req, res) => {
     const { nombre, descripcion } = req.body;
     const userId = req.user.id;
@@ -47,22 +47,22 @@ const followPage = async (req, res) => {
     console.log("ID del usuario:", userId);
 
     try {
-        // Verificar si la página existe
+        // Verifica si la página existe
         const page = await Page.findById(pageId);
         if (!page) {
             return res.status(404).json({ message: 'Página no encontrada' });
         }
 
-        // Verificar si el usuario ya sigue la página
+        // Verifica si el usuario ya sigue la página
         if (page.seguidores.includes(userId)) {
             return res.status(400).json({ message: 'Ya sigues esta página' });
         }
 
-        // Agregar el usuario a la lista de seguidores de la página
+        // Agrega el usuario a la lista de seguidores de la página
         page.seguidores.push(userId);
         await page.save();
 
-        // Agregar la página a la lista de páginas seguidas del usuario
+        // Agrega la página a la lista de páginas seguidas del usuario
         const user = await User.findByIdAndUpdate(
             userId,
             { $addToSet: { paginasSeguidas: pageId } },
@@ -80,11 +80,20 @@ const followPage = async (req, res) => {
 
 // Ver páginas
 const getPages = async (req, res) => {
+    const userId = req.user.id; // ID del usuario autenticado
+
     try {
-        const pages = await Page.find().populate('administrador', 'nombre avatar');
+        // Obtiene las páginas que el usuario no sigue
+        const user = await User.findById(userId).select('paginasSeguidas');
+        const pagesFollowed = user.paginasSeguidas || [];
+
+        const pages = await Page.find({ _id: { $nin: pagesFollowed } }) // Excluye páginas que el usuario ya sigue
+            .populate('administrador', 'nombre avatar');
+
         res.status(200).json(pages);
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor' });
+        console.error("Error en getPages:", error);
+        res.status(500).json({ message: 'Error en el servidor', error: error.message });
     }
 };
 

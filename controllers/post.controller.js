@@ -1,4 +1,5 @@
 const Post = require('../Models/post.model');
+const User = require('../Models/user.model')
 
 // Crear publicación
 const createPost = async (req, res) => {
@@ -29,12 +30,12 @@ const tagFriendsInPost = async (req, res) => {
             return res.status(404).json({ message: 'Publicación no encontrada' });
         }
 
-        // Verificar que el usuario que etiqueta sea el autor de la publicación
+        // Verifica que el usuario que etiqueta sea el autor de la publicación
         if (post.autor.toString() !== userId) {
             return res.status(403).json({ message: 'No tienes permisos para etiquetar en esta publicación' });
         }
 
-        // Agregar etiquetas a la publicación
+        // Agrega etiquetas a la publicación
         post.etiquetas = [...new Set([...post.etiquetas, ...etiquetas])]; // Evitar duplicados
         await post.save();
 
@@ -48,11 +49,29 @@ const tagFriendsInPost = async (req, res) => {
 
 // Ver publicaciones
 const getPosts = async (req, res) => {
+    const userId = req.user.id; // ID del usuario autenticado
+
     try {
-        const posts = await Post.find().populate('autor', 'nombre avatar');
+        // Obtiene la lista de amigos del usuario autenticado
+        const user = await User.findById(userId).select('amigos');
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        const friendsList = user.amigos;
+
+        // Obtiene las publicaciones de los amigos y del usuario autenticado
+        const posts = await Post.find({ autor: { $in: [...friendsList, userId] } })
+            .populate('autor', 'nombre avatar')
+            .populate({
+                path: 'comentarios.usuario',
+                select: 'nombre avatar'
+            });
+
         res.status(200).json(posts);
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor' });
+        console.error("Error en getPosts:", error);
+        res.status(500).json({ message: 'Error en el servidor', error: error.message });
     }
 };
 
@@ -95,11 +114,11 @@ const getPagePostsForNonFriends = async (req, res) => {
     const userId = req.user.id;
 
     try {
-        // Obtener las páginas que el usuario sigue
+        // Obtiene las páginas que el usuario sigue
         const user = await User.findById(userId).populate('paginasSeguidas');
         const followedPages = user.paginasSeguidas;
 
-        // Si el usuario no sigue ninguna página, obtener publicaciones de páginas aleatorias
+        // Si el usuario no sigue ninguna página, Obtiene publicaciones de páginas aleatorias
         if (followedPages.length === 0) {
             const randomPages = await Page.aggregate([{ $sample: { size: 5 } }]);
             const randomPageIds = randomPages.map(page => page._id);

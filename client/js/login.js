@@ -1,16 +1,15 @@
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault(); // Evita que el formulario se envíe de forma tradicional
+    e.preventDefault();
 
-    // Obtener los valores del formulario
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // Mensaje de error
     const messageDiv = document.getElementById('message');
-    messageDiv.textContent = ''; // Limpiar mensajes anteriores
+    messageDiv.textContent = '';
 
     try {
-        // Enviar la solicitud al backend
+        console.log("Enviando solicitud de login...");
+
         const response = await fetch('http://localhost:3000/api/auth/login', {
             method: 'POST',
             headers: {
@@ -20,16 +19,21 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         });
 
         const data = await response.json();
+        console.log("Respuesta del servidor:", data);
 
         if (response.ok) {
-            // Guardar tokens en localStorage
+            console.log("Inicio de sesión exitoso");
+
             localStorage.setItem('accessToken', data.accessToken);
             localStorage.setItem('refreshToken', data.refreshToken);
 
-            // Redirigir al usuario a la página principal
+            console.log("Tokens guardados en localStorage");
+
+            // Redirigir al feed
+            console.log("Redirigiendo a feed.html...");
             window.location.href = 'feed.html';
         } else {
-            // Mostrar mensaje de error
+            console.error("Error en el login:", data.message);
             messageDiv.textContent = data.message || 'Error al iniciar sesión';
         }
     } catch (error) {

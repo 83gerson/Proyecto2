@@ -168,7 +168,8 @@ body {
     gap: 10px;
 }
 
-.friend-result, .friend {
+.friend-result,
+.friend {
     display: flex;
     align-items: center;
     padding: 8px;
@@ -176,7 +177,8 @@ body {
     transition: background-color 0.2s;
 }
 
-.friend-result:hover, .friend:hover {
+.friend-result:hover,
+.friend:hover {
     background-color: #f5f6f7;
 }
 
@@ -333,27 +335,27 @@ body {
     .container {
         flex-direction: column;
     }
-    
+
     .sidebar {
         width: 100%;
         position: static;
         height: auto;
     }
-    
+
     .navbar {
         padding: 10px;
     }
-    
+
     .search-bar {
         flex: 1;
         margin: 0 10px;
     }
-    
+
     .dropdown-content {
         width: 280px;
         right: -70px;
     }
-    
+
     .dropdown-content::before {
         right: 80px;
     }
@@ -361,14 +363,474 @@ body {
 
 /* Animaciones y transiciones */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .dropdown-content.show {
     animation: fadeIn 0.2s ease-out;
 }
 
-.friend-result, .notification, .post {
+.friend-result,
+.notification,
+.post {
     animation: fadeIn 0.3s ease-out;
+}
+
+/* Estilos para los comentarios */
+.comments {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ddd;
+}
+
+.comment {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.comment-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-content {
+    flex-grow: 1;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: #333;
+}
+
+.comment-content p {
+    margin: 5px 0 0;
+    color: #555;
+}
+
+/* Estilos para el botón de mostrar/ocultar comentarios */
+.toggle-comments-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.toggle-comments-button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para el contenedor de resultados de búsqueda */
+.search-results {
+    width: 250px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 20px;
+    display: none;
+    /* Oculto por defecto */
+}
+
+.search-results h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.search-results .friend-result {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.search-results .friend-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.search-results .friend-name {
+    flex-grow: 1;
+    color: #333;
+}
+
+.search-results .add-friend-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.search-results .add-friend-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para el contenedor de resultados de búsqueda */
+.search-results {
+    display: none;
+    /* Oculto por defecto */
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 300px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+/* Encabezado de los resultados de búsqueda */
+.search-results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Botón de cerrar */
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+/* Contenido de los resultados de búsqueda */
+#searchResultsContent {
+    padding: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Estilos para el botón de mostrar/ocultar páginas sugeridas */
+.toggle-pages-btn {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.toggle-pages-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Contenedor de páginas sugeridas */
+.suggested-pages {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.suggested-pages h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Grid de páginas sugeridas */
+.pages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+/* Estilos para cada card de página */
+.page-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+}
+
+.page-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.page-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.page-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.follow-page-btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.follow-page-btn:hover {
+    background-color: #0056b3;
+}
+
+.notification {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.notification-actions {
+    margin-top: 10px;
+}
+
+.accept-friend-btn,
+.reject-friend-btn {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.accept-friend-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.reject-friend-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.accept-friend-btn:hover {
+    background-color: #218838;
+}
+
+.reject-friend-btn:hover {
+    background-color: #c82333;
+}
+
+/* Estilos para el dropdown de notificaciones */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #333;
+    min-width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.dropdown-content.show {
+    display: block;
+}
+
+.notification {
+    padding: 10px;
+    border-bottom: 1px solid #444;
+    color: white;
+}
+
+.notification:last-child {
+    border-bottom: none;
+}
+
+.notification-time {
+    font-size: 0.8em;
+    color: #aaa;
+    display: block;
+    margin-top: 5px;
+}
+
+.notification-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.accept-friend-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.reject-friend-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.accept-friend-btn:hover {
+    background-color: #45a049;
+}
+
+.reject-friend-btn:hover {
+    background-color: #e53935;
+}
+
+.friend {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.friend-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.friend-name {
+    flex-grow: 1;
+}
+
+.block-friend-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.block-friend-btn:hover {
+    background-color: #ff1a1a;
+}
+
+/* Contenedor del carrusel */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+/* Botones de navegación */
+.carousel-button {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 1;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-button.prev {
+    border-radius: 0 5px 5px 0;
+}
+
+.carousel-button.next {
+    border-radius: 5px 0 0 5px;
+}
+
+/* Carrusel */
+.carousel {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overflow: hidden;
+    /* Oculta la barra de desplazamiento */
+    cursor: grab;
+    /* Cambia el cursor al deslizar */
+}
+
+/* Grupo de páginas */
+.page-group {
+    display: flex;
+    gap: 16px;
+    scroll-snap-align: start;
+    flex: 0 0 100%;
+    min-width: 100%;
+    /* Cada grupo tenga el mismo ancho */
+    transition: transform 0.5s ease;
+    /* Animación de desplazamiento */
+    margin-bottom: 30px
+}
+
+/* Tarjetas de página */
+.page-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    width: calc(33.33% - 11px);
+    text-align: center;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+.page-card .page-info {
+    margin-bottom: 12px;
+}
+
+.page-card .page-name {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.page-card .page-description {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.follow-page-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.follow-page-btn:hover {
+    background-color: #0056b3;
 }

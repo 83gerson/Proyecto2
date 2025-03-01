@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,22 +8,34 @@
     <link rel="stylesheet" href="../css/feed.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
+
 <body>
     <div class="navbar">
-        <div class="logo" onclick="window.location.href='feed.html'">Mi Red Social</div>
+        <div class="logo" onclick="window.location.href='feed.html'">UCRbook</div>
         <div class="search-bar">
-            <input type="text" placeholder="Buscar amigos...">
-            <button><i class="fas fa-search"></i> Buscar</button>
+            <input type="text" id="searchInput" placeholder="Buscar usuarios...">
+            <button id="searchButton"><i class="fas fa-search"></i> Buscar</button>
         </div>
         <div class="nav-actions">
             <div class="notifications">
-                <button id="notificationsButton"><i class="fas fa-bell"></i></button>
+                <button id="notificationsButton">
+                    <i class="fas fa-bell"></i>
+                    <span id="notificationsBadge" class="notification-badge" style="display: none;">0</span>
+                </button>
                 <div id="notificationsDropdown" class="dropdown-content">
                     <h3>Notificaciones</h3>
-                    <!-- Notificaciones se cargarán aquí -->
+                    <!-- Notificaciones -->
                 </div>
             </div>
-            <button onclick="logout()" style="background-color: #3a3b3c; border: none; color: white; border-radius: 5px; padding: 8px 12px; cursor: pointer;">
+
+
+            <!-- Botón para ver perfil -->
+            <button id="profileButton"
+                style="background-color: #3a3b3c; border: none; color: white; border-radius: 5px; padding: 8px 12px; cursor: pointer;">
+                <i class="fas fa-user"></i> Perfil
+            </button>
+            <button onclick="logout()"
+                style="background-color: #3a3b3c; border: none; color: white; border-radius: 5px; padding: 8px 12px; cursor: pointer;">
                 <i class="fas fa-sign-out-alt"></i> Salir
             </button>
         </div>
@@ -32,13 +45,13 @@
         <div class="sidebar">
             <h3>Amigos</h3>
             <div id="friendsList">
-                <!-- Lista de amigos se cargará aquí -->
+                <!-- Lista de amigos -->
                 <p>Cargando amigos...</p>
             </div>
         </div>
 
         <div class="feed">
-            <h1>Feed de Publicaciones</h1>
+            <h1>Bienvenido de vuelta!</h1>
             <div class="create-post">
                 <h3>¿Qué estás pensando?</h3>
                 <form id="createPostForm">
@@ -47,12 +60,24 @@
                 </form>
             </div>
             <div id="feedContent">
-                <!-- Las publicaciones se cargarán aquí dinámicamente -->
+                <!-- Publicaciones -->
                 <p>Cargando publicaciones...</p>
+            </div>
+        </div>
+
+        <!-- Contenedor para resultados de búsqueda -->
+        <div id="searchResults" class="search-results">
+            <div class="search-results-header">
+                <h3>Resultados de búsqueda</h3>
+                <button id="closeSearchResults" class="close-btn">&times;</button>
+            </div>
+            <div id="searchResultsContent">
+                <!-- Resultados de búsqueda -->
             </div>
         </div>
     </div>
 
     <script src="../js/feed.js"></script>
 </body>
+
 </html>

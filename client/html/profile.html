@@ -1,23 +1,58 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/profile.css">
 </head>
+
 <body>
-    <div class="container mt-5">
-        <h2 class="text-center">Mi Perfil</h2>
-        <div class="card mt-4">
-            <div class="card-body">
-                <h5 class="card-title" id="profileName"></h5>
-                <p class="card-text" id="profileBio"></p>
-                <button class="btn btn-primary" onclick="editProfile()">Editar Perfil</button>
-            </div>
+    <div class="container">
+        <h1>Perfil</h1>
+        <div class="profile-card">
+            <img id="avatar" src="" alt="Avatar">
+            <h2 id="nombre"></h2>
+            <p id="biografia"></p>
+            <button onclick="openEditModal()">✏️ Editar Perfil</button>
+            <button onclick="deleteAccount()">🗑 Eliminar Cuenta</button>
+            <button class="cancel-button" onclick="cancel()">❌ Atras</button> <!-- Botón de Cancelar -->
         </div>
     </div>
-    <script src="js/main.js"></script>
+
+    <!-- Modal de edición -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h2>Editar Perfil</h2>
+            <label>Nombre:</label>
+            <input type="text" id="editNombre">
+            <label>Biografía:</label>
+            <input type="text" id="editBiografia">
+
+            <label>Selecciona un avatar:</label>
+            <div class="avatar-selection">
+                <input type="hidden" id="editAvatar" name="avatar">
+                <div class="avatars">
+                    <img src="../avatars/1.png" class="avatar" data-avatar="1.png">
+                    <img src="../avatars/2.png" class="avatar" data-avatar="2.png">
+                    <img src="../avatars/3.png" class="avatar" data-avatar="3.png">
+                    <img src="../avatars/4.png" class="avatar" data-avatar="4.png">
+                    <img src="../avatars/5.png" class="avatar" data-avatar="5.png">
+                    <img src="../avatars/6.png" class="avatar" data-avatar="6.png">
+                    <img src="../avatars/7.png" class="avatar" data-avatar="7.png">
+                    <img src="../avatars/8.png" class="avatar" data-avatar="8.png">
+                    <img src="../avatars/9.png" class="avatar" data-avatar="9.png">
+                    <img src="../avatars/10.png" class="avatar" data-avatar="10.png">
+                </div>
+            </div>
+
+            <button onclick="saveProfile()">💾 Guardar</button>
+            <button onclick="closeEditModal()">❌ Cerrar</button>
+        </div>
+    </div>
+
+    <script src="../js/profile.js"></script>
 </body>
+
 </html>

@@ -1,27 +1,36 @@
 const Notification = require('../Models/notification.model');
 const { sendNotificationEmail } = require('../utils/emailService');
-const User = require('../Models/user.model'); // Asegúrate de importar el modelo User
+const User = require('../Models/user.model');
 
-// Enviar notificación
+// Envío de notificación
 const sendNotification = async (req, res) => {
     const { tipo, usuarioDestino, usuarioOrigen, contenido } = req.body;
 
     console.log("Datos recibidos:", { tipo, usuarioDestino, usuarioOrigen, contenido });
 
     try {
-        // Verificar que el usuario destino exista
+        // Verifica que el usuario destino exista
         const user = await User.findById(usuarioDestino);
         if (!user) {
             return res.status(404).json({ message: 'Usuario destino no encontrado' });
         }
 
-        const notification = new Notification({ tipo, usuarioDestino, usuarioOrigen, contenido });
+        const notification = new Notification({
+            tipo: 'solicitud_amistad',
+            usuarioDestino,
+            usuarioOrigen,
+            contenido,
+            metadata: {
+                senderId: usuarioOrigen, // ID del usuario que envía la solicitud
+                requestId: usuarioDestino, // ID de la solicitud 
+            },
+        });
         await notification.save();
 
         console.log("Notificación creada:", notification);
 
-        // Enviar correo de notificación
-        await sendNotificationEmail(user.email, contenido); // Pasar el correo del usuario destino
+        // Envía correo de notificación
+        await sendNotificationEmail(user.email, contenido); // Pasa el correo del usuario destino
 
         res.status(201).json(notification);
     } catch (error) {
@@ -37,7 +46,8 @@ const getNotifications = async (req, res) => {
     console.log("ID del usuario:", userId);
 
     try {
-        const notifications = await Notification.find({ usuarioDestino: userId }).populate('usuarioOrigen', 'nombre avatar');
+        const notifications = await Notification.find({ usuarioDestino: userId })
+            .populate('usuarioOrigen', 'nombre avatar');
         console.log("Notificaciones encontradas:", notifications);
         res.status(200).json(notifications);
     } catch (error) {

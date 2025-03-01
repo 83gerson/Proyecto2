@@ -1,17 +1,24 @@
-const express = require("express");
+const express = require('express');
 const apiRouter = express.Router();
-const { registerUser, loginUser } = require("./controllers/auth.controller");
-const { validateToken } = require("./middleware/authMiddleware");
 
-apiRouter.get("/", (req, res) => {
-    return res.send("Bienvenido al api");
-});
+// Ruta de bienvenida de la API
+// apiRouter.get('/', (req, res) => {
+//     return res.send('Bienvenido al API');
+// });
 
-apiRouter.post("/auth/register", registerUser);
-apiRouter.post("/auth/login", loginUser);
-// Logout de usuario
-apiRouter.post('/auth/logout', logout);
+// Rutas de autenticación
+apiRouter.use('/auth', require('./routes/auth.route'));
 
-apiRouter.use("/usuarios", validateToken, require("./routes/user.route"));
+// Rutas de usuarios
+apiRouter.use('/users', require('./routes/user.route'));
+
+// Rutas de publicaciones
+apiRouter.use('/posts', require('./routes/post.route'));
+
+// Rutas de páginas
+apiRouter.use('/pages', require('./routes/page.route'));
+
+// Rutas de notificaciones
+apiRouter.use('/notifications', require('./routes/notification.route'));
 
 module.exports = apiRouter;

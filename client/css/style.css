@@ -35,7 +35,8 @@ label {
     color: #555;
 }
 
-input, textarea {
+input,
+textarea {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
@@ -44,7 +45,7 @@ input, textarea {
 }
 
 textarea {
-    resize: vertical; /* Permite redimensionar verticalmente */
+    resize: vertical;
 }
 
 button {
@@ -157,4 +158,32 @@ h1 {
 
 .post-actions button:hover {
     background-color: #0056b3;
+}
+
+.avatar-selection {
+    text-align: center;
+}
+
+.avatars {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border 0.2s;
+}
+
+.avatar:hover {
+    transform: scale(1.1);
+}
+
+.avatar.selected {
+    border: 2px solid #007bff;
 }

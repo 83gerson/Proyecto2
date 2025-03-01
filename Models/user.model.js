@@ -30,12 +30,17 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
     }],
-    solicitudesAmistadEnviadas: [{  // Nuevo campo
+    solicitudesAmistadEnviadas: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
         default: [],
     }],
-    solicitudesAmistadRecibidas: [{  // Nuevo campo
+    solicitudesAmistadRecibidas: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        default: [],
+    }],
+    solicitudesAmistadRechazadas: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
         default: [],

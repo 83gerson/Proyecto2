@@ -1,13 +1,9 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const authRoutes = require('./routes/auth.route');
-const userRoutes = require('./routes/user.route');
-const postRoutes = require('./routes/post.route');
-const pageRoutes = require('./routes/page.route');
-const notificationRoutes = require('./routes/notification.route');
-const { startCronJobs } = require('./utils/cronJobs');
+const apiRouter = require('./api.router'); // Importa el router de la API
 
 dotenv.config();
 const app = express();
@@ -17,8 +13,12 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    return res.send("Bienvenido al api");
+// Servir archivos estáticos desde la carpeta "client"
+app.use(express.static(path.join(__dirname, 'client')));
+
+// Ruta raíz para servir login.html
+app.get('/', (_, res) => {
+    res.sendFile(path.join(__dirname, 'client', '/html/login.html'));
 });
 
 // Conexión a MongoDB
@@ -26,15 +26,11 @@ mongoose.connect(process.env.DB_CNN)
     .then(() => console.log('Conectado a MongoDB'))
     .catch(err => console.error('Error de conexión a MongoDB:', err));
 
-// Rutas
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/posts', postRoutes);
-app.use('/api/pages', pageRoutes);
-app.use('/api/notifications', notificationRoutes);
-
-// Iniciar cron jobs
-startCronJobs();
+// Rutas de la API
+app.use('/api', apiRouter);
 
 // Iniciar servidor
-app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Frontend corriendo en http://localhost:${PORT}`);
+    console.log(`API corriendo en http://localhost:${PORT}/api`);
+});
